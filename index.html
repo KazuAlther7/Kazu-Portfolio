@@ -879,6 +879,10 @@
       font-weight: bold;
     }
 
+    .about-info .about-info-wide {
+      grid-column: 1 / -1;
+    }
+
     .about-info a:hover {
       color: var(--accent);
     }
@@ -1318,9 +1322,9 @@
                     aria-expanded="false" aria-controls="stack"
                     aria-label="Open the works folder">
               <span class="folder-back"></span>
-              <span class="paper p1"><img src="works/work-01-thumb.jpg" alt=""></span>
-              <span class="paper p2"><img src="works/work-02-thumb.jpg" alt=""></span>
-              <span class="paper p3"><img src="works/work-03-thumb.jpg" alt=""></span>
+              <span class="paper p1"><img src="work-01-thumb.jpg" alt=""></span>
+              <span class="paper p2"><img src="work-02-thumb.jpg" alt=""></span>
+              <span class="paper p3"><img src="work-03-thumb.jpg" alt=""></span>
               <span class="folder-front">
                 <span class="folder-name">WORKS</span>
                 <span class="folder-meta"><span id="folderCount">06 files</span> · /works</span>
@@ -1330,9 +1334,9 @@
           </div>
 
           <!--
-            Semua gambar karya ada di folder "works/".
+            Semua gambar karya ditaruh satu folder dengan index.html.
             Mau nambah karya? copy satu blok <article class="sheet"> di bawah,
-            ganti nama file, judul & kategori, lalu simpan gambarnya di folder works/.
+            ganti nama file, judul & kategori, lalu simpan gambarnya (versi penuh + -thumb) di folder yang sama.
           -->
           <div class="stack" id="stack">
             <div class="tabbar" id="tabbar"></div>
@@ -1340,10 +1344,10 @@
           <article class="sheet" data-category="esports poster">
             <div class="sheet-body">
               <button class="sheet-img" type="button"
-                      data-full="works/work-01.jpg" data-file="work-01.jpg"
+                      data-full="work-01.jpg" data-file="work-01.jpg"
                       data-title="Let&#39;s Kill It" data-sub="Esports / Poster Design"
                       aria-label="Open Let&#39;s Kill It">
-                <img src="works/work-01-thumb.jpg" alt="Esports poster of a player reaching toward the camera with green energy on an orange background" loading="lazy">
+                <img src="work-01-thumb.jpg" alt="Esports poster of a player reaching toward the camera with green energy on an orange background" loading="lazy">
               </button>
 
               <div class="sheet-info">
@@ -1369,10 +1373,10 @@
           <article class="sheet" data-category="esports">
             <div class="sheet-body">
               <button class="sheet-img" type="button"
-                      data-full="works/work-02.jpg" data-file="work-02.jpg"
+                      data-full="work-02.jpg" data-file="work-02.jpg"
                       data-title="Next Tour" data-sub="Esports / Scene Composition"
                       aria-label="Open Next Tour">
-                <img src="works/work-02-thumb.jpg" alt="Esports team sitting around a trophy in a vintage red living room" loading="lazy">
+                <img src="work-02-thumb.jpg" alt="Esports team sitting around a trophy in a vintage red living room" loading="lazy">
               </button>
 
               <div class="sheet-info">
@@ -1398,10 +1402,10 @@
           <article class="sheet" data-category="esports poster type">
             <div class="sheet-body">
               <button class="sheet-img" type="button"
-                      data-full="works/work-03.jpg" data-file="work-03.jpg"
+                      data-full="work-03.jpg" data-file="work-03.jpg"
                       data-title="Big Three Fire Up" data-sub="Esports / Collage &amp; Typography"
                       aria-label="Open Big Three Fire Up">
-                <img src="works/work-03-thumb.jpg" alt="Collage-style esports poster with cut-out portraits and ransom-note typography" loading="lazy">
+                <img src="work-03-thumb.jpg" alt="Collage-style esports poster with cut-out portraits and ransom-note typography" loading="lazy">
               </button>
 
               <div class="sheet-info">
@@ -1427,10 +1431,10 @@
           <article class="sheet" data-category="other">
             <div class="sheet-body">
               <button class="sheet-img" type="button"
-                      data-full="works/work-04.jpg" data-file="work-04.jpg"
+                      data-full="work-04.jpg" data-file="work-04.jpg"
                       data-title="Here Lies" data-sub="Digital Art / Photo Manipulation"
                       aria-label="Open Here Lies">
-                <img src="works/work-04-thumb.jpg" alt="Dark cinematic poster of a fallen hero beside a gravestone in a thunderstorm" loading="lazy">
+                <img src="work-04-thumb.jpg" alt="Dark cinematic poster of a fallen hero beside a gravestone in a thunderstorm" loading="lazy">
               </button>
 
               <div class="sheet-info">
@@ -1456,10 +1460,10 @@
           <article class="sheet" data-category="esports">
             <div class="sheet-body">
               <button class="sheet-img" type="button"
-                      data-full="works/work-05.jpg" data-file="work-05.jpg"
+                      data-full="work-05.jpg" data-file="work-05.jpg"
                       data-title="Tactical Hokage" data-sub="Esports / Digital Art"
                       aria-label="Open Tactical Hokage">
-                <img src="works/work-05-thumb.jpg" alt="Esports player in a red cloak with nine glowing tails in front of a stone-carved village" loading="lazy">
+                <img src="work-05-thumb.jpg" alt="Esports player in a red cloak with nine glowing tails in front of a stone-carved village" loading="lazy">
               </button>
 
               <div class="sheet-info">
@@ -1485,10 +1489,10 @@
           <article class="sheet" data-category="poster other">
             <div class="sheet-body">
               <button class="sheet-img" type="button"
-                      data-full="works/work-06.jpg" data-file="work-06.jpg"
+                      data-full="work-06.jpg" data-file="work-06.jpg"
                       data-title="Finalist" data-sub="Sports / Poster Design"
                       aria-label="Open Finalist">
-                <img src="works/work-06-thumb.jpg" alt="World Cup finalist poster with player pin badges and patches on a wooden table" loading="lazy">
+                <img src="work-06-thumb.jpg" alt="World Cup finalist poster with player pin badges and patches on a wooden table" loading="lazy">
               </button>
 
               <div class="sheet-info">
@@ -1570,6 +1574,10 @@
                   <a href="https://instagram.com/kazu.png_?mdxt=MWExd3R6amJkajUzbg%3D%3D"
                      target="_blank" rel="noopener noreferrer">@kazu.png_ ↗</a>
                 </dd>
+              </div>
+              <div class="about-info-wide">
+                <dt>Experience</dt>
+                <dd>3 Years Graphic Design Experience</dd>
               </div>
             </dl>
 
