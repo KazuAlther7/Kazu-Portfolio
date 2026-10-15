@@ -405,22 +405,142 @@
       padding-top: 3px;
     }
 
+    /* ===== ABOUT ===== */
     .about-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 45px;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+      gap: 64px;
+      align-items: center;
+    }
+
+    .about-visual {
+      padding-bottom: 14px;
+    }
+
+    /* foto muncul dari lingkaran, bagian bawah terpotong mengikuti bentuk lingkaran */
+    .avatar {
+      position: relative;
+      width: min(100%, 440px);
+      aspect-ratio: 4 / 5;
+      margin: 0 auto;
+    }
+
+    .avatar-ring {
+      position: absolute;
+      left: -4%;
+      right: -4%;
+      bottom: -3.2%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px dashed rgba(213, 255, 85, .45);
+      animation: ringSpin 50s linear infinite;
+    }
+
+    .avatar-circle {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 22%, #efffa6, var(--accent) 42%, #98cf00 100%);
+      box-shadow: 0 0 90px rgba(213, 255, 85, .16);
+    }
+
+    .avatar-clip {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: 0 0 50% 50% / 0 0 40% 40%;
+    }
+
+    .avatar-clip img {
+      position: absolute;
+      left: 0;
+      bottom: -3.2%;
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, .35));
+    }
+
+    .avatar-chip {
+      position: absolute;
+      z-index: 2;
+      padding: 8px 13px;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .avatar-chip.chip-role {
+      left: -3%;
+      top: 44%;
+      background: var(--accent);
+      color: #101010;
+      transform: rotate(-6deg);
+    }
+
+    .avatar-chip.chip-name {
+      right: -2%;
+      bottom: 13%;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      color: var(--text);
+      transform: rotate(4deg);
+    }
+
+    .avatar-chip.chip-name span {
+      color: var(--accent);
     }
 
     .about-grid h2 {
       font-size: clamp(32px, 5vw, 50px);
       line-height: 1.1;
       letter-spacing: -2px;
+      margin: 14px 0 22px;
     }
 
     .about-copy p {
       color: var(--muted);
       margin-bottom: 16px;
       font-size: 14px;
+      max-width: 520px;
+    }
+
+    .about-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin: 26px 0 4px;
+      max-width: 520px;
+      border-top: 1px solid var(--line);
+    }
+
+    .about-info div {
+      padding: 14px 12px 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .about-info dt {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .about-info dd {
+      margin-top: 2px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .about-info a:hover {
+      color: var(--accent);
     }
 
     .skills {
@@ -436,6 +556,78 @@
       border-radius: 3px;
       font-size: 11px;
       color: #ccc;
+    }
+
+    .about-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    @keyframes ringSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== ACHIEVEMENTS ===== */
+    .achievements {
+      border-top: 1px solid var(--line);
+    }
+
+    .ach {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 24px;
+      padding: 28px 12px 28px 0;
+      border-bottom: 1px solid var(--line);
+      transition: padding .3s, background .3s;
+    }
+
+    .ach:hover {
+      padding-left: 18px;
+      background: linear-gradient(90deg, rgba(213, 255, 85, .07), transparent 70%);
+    }
+
+    .ach-year {
+      color: var(--accent);
+      font-size: clamp(22px, 3.4vw, 32px);
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+    }
+
+    .ach-main h3 {
+      font-size: clamp(17px, 2.4vw, 22px);
+      letter-spacing: -.5px;
+      line-height: 1.25;
+    }
+
+    .ach-org {
+      margin-top: 3px;
+      color: #ccc;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .ach-desc {
+      margin-top: 10px;
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .ach-tag {
+      padding: 6px 11px;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      color: #ccc;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .contact-panel {
@@ -481,9 +673,17 @@
         min-height: 62px;
       }
 
+      nav {
+        gap: 12px;
+      }
+
       .nav-links {
-        gap: 13px;
-        font-size: 11px;
+        gap: 11px;
+        font-size: 10.5px;
+      }
+
+      .logo {
+        font-size: 20px;
       }
 
       .hero {
@@ -518,7 +718,36 @@
 
       .about-grid {
         grid-template-columns: 1fr;
-        gap: 25px;
+        gap: 34px;
+      }
+
+      .avatar {
+        width: min(88%, 340px);
+      }
+
+      .avatar-chip {
+        padding: 6px 10px;
+        font-size: 9px;
+        letter-spacing: 1.5px;
+      }
+
+      .about-info {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .ach {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 22px 0;
+      }
+
+      .ach:hover {
+        padding-left: 0;
+      }
+
+      .ach-tag {
+        justify-self: start;
+        margin-top: 6px;
       }
 
       .project-number {
@@ -526,8 +755,19 @@
       }
     }
 
+    @media (max-width: 380px) {
+      .nav-links {
+        gap: 8px;
+        font-size: 10px;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .page.active {
+        animation: none;
+      }
+
+      .avatar-ring {
         animation: none;
       }
 
@@ -547,6 +787,7 @@
         <a data-page="home">Home</a>
         <a data-page="work">Works</a>
         <a data-page="about">About</a>
+        <a data-page="achievements">Achievements</a>
         <a data-page="contact">Contact</a>
       </div>
     </nav>
@@ -697,20 +938,54 @@
     <section class="page" id="page-about">
       <div class="section">
         <div class="container about-grid">
-          <div>
-            <div class="eyebrow">A little about me</div>
-            <h2>Design with<br>purpose.<br><span style="color:var(--accent)">Made to stand out.</span></h2>
+          <div class="about-visual">
+            <div class="avatar">
+              <span class="avatar-ring"></span>
+              <span class="avatar-circle"></span>
+              <div class="avatar-clip">
+                <img src="about-photo.webp" alt="Portrait of Kazu, graphic designer"
+                     width="1000" height="1333">
+              </div>
+              <span class="avatar-chip chip-role">Graphic Designer</span>
+              <span class="avatar-chip chip-name">Kazu Altr <span>®</span></span>
+            </div>
           </div>
 
           <div class="about-copy">
+            <div class="eyebrow">A little about me</div>
+            <h2>Design with<br>purpose.<br><span style="color:var(--accent)">Made to stand out.</span></h2>
+
             <p>
               Hi, I'm Kazu — a graphic designer passionate about
               creating expressive visuals and strong visual identities.
             </p>
             <p>
               I explore composition, typography, color, and imagery
-              to turn ideas into impactful visual experiences.
+              to turn ideas into impactful visual experiences — from
+              esports posters and collage layouts to cinematic digital art.
             </p>
+
+            <dl class="about-info">
+              <div>
+                <dt>Name</dt>
+                <dd>Kazu Altr</dd>
+              </div>
+              <div>
+                <dt>Role</dt>
+                <dd>Graphic Designer</dd>
+              </div>
+              <div>
+                <dt>Focus</dt>
+                <dd>Esports &amp; Poster Design</dd>
+              </div>
+              <div>
+                <dt>Instagram</dt>
+                <dd>
+                  <a href="https://instagram.com/kazu.png_?mdxt=MWExd3R6amJkajUzbg%3D%3D"
+                     target="_blank" rel="noopener noreferrer">@kazu.png_ ↗</a>
+                </dd>
+              </div>
+            </dl>
 
             <div class="skills">
               <span>Graphic Design</span>
@@ -719,6 +994,73 @@
               <span>Photo Manipulation</span>
               <span>Art Direction</span>
             </div>
+
+            <div class="about-actions">
+              <button class="btn primary" data-page="work">SEE MY WORK ↘</button>
+              <button class="btn" data-page="achievements">ACHIEVEMENTS ↗</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== HALAMAN ACHIEVEMENTS ===== -->
+    <section class="page" id="page-achievements">
+      <div class="section">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">Recognition / Milestones</div>
+              <h2>Achievements.</h2>
+            </div>
+            <p>Awards and milestones along my design journey.</p>
+          </div>
+
+          <!--
+            CARA ISI: ganti teks di tiap blok <article class="ach"> di bawah ini
+            dengan penghargaan/prestasi lu. Mau nambah? copy-paste satu blok
+            <article class="ach">...</article> lalu edit isinya.
+            Urutan yang paling baru taruh paling atas.
+          -->
+          <div class="achievements">
+            <article class="ach">
+              <span class="ach-year">20XX</span>
+              <div class="ach-main">
+                <h3>Nama Penghargaan / Prestasi</h3>
+                <p class="ach-org">Penyelenggara / Event</p>
+                <p class="ach-desc">
+                  Tulis deskripsi singkat tentang prestasi ini — apa yang
+                  lu capai dan kenapa ini berarti buat lu.
+                </p>
+              </div>
+              <span class="ach-tag">Award</span>
+            </article>
+
+            <article class="ach">
+              <span class="ach-year">20XX</span>
+              <div class="ach-main">
+                <h3>Nama Penghargaan / Prestasi</h3>
+                <p class="ach-org">Penyelenggara / Event</p>
+                <p class="ach-desc">
+                  Tulis deskripsi singkat tentang prestasi ini — apa yang
+                  lu capai dan kenapa ini berarti buat lu.
+                </p>
+              </div>
+              <span class="ach-tag">Competition</span>
+            </article>
+
+            <article class="ach">
+              <span class="ach-year">20XX</span>
+              <div class="ach-main">
+                <h3>Nama Penghargaan / Prestasi</h3>
+                <p class="ach-org">Penyelenggara / Event</p>
+                <p class="ach-desc">
+                  Tulis deskripsi singkat tentang prestasi ini — apa yang
+                  lu capai dan kenapa ini berarti buat lu.
+                </p>
+              </div>
+              <span class="ach-tag">Milestone</span>
+            </article>
           </div>
         </div>
       </div>
@@ -767,7 +1109,7 @@
     const pages = document.querySelectorAll(".page");
     const pageTriggers = document.querySelectorAll("[data-page]");
     const navLinks = document.querySelectorAll(".nav-links a");
-    const validPages = ["home", "work", "about", "contact"];
+    const validPages = ["home", "work", "about", "achievements", "contact"];
 
     function showPage(name, updateHash = true) {
       if (!validPages.includes(name)) name = "home";
