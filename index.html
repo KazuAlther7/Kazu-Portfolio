@@ -241,6 +241,13 @@
       gap: 28px 18px;
     }
 
+    @media (min-width: 900px) {
+      .gallery {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 36px 22px;
+      }
+    }
+
     .project {
       min-width: 0;
     }
@@ -250,13 +257,19 @@
     }
 
     .project-image {
-      aspect-ratio: 4 / 3;
+      position: relative;
+      width: 100%;
+      display: block;
+      padding: 0;
+      cursor: zoom-in;
+      aspect-ratio: 3 / 4;
       overflow: hidden;
       background:
         radial-gradient(ellipse at 70% 25%, #343434, transparent 45%),
         linear-gradient(135deg, #242424, #111);
       border: 1px solid #262626;
       border-radius: 4px;
+      transition: border-color .25s;
     }
 
     .project-image img {
@@ -267,9 +280,108 @@
       transition: transform .45s;
     }
 
+    .project:hover .project-image {
+      border-color: var(--accent);
+    }
+
     .project:hover .project-image img {
       transform: scale(1.04);
     }
+
+    .project-image::after {
+      content: "VIEW ↗";
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      padding: 5px 9px;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      background: var(--accent);
+      color: #101010;
+      border-radius: 3px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: .25s;
+    }
+
+    .project:hover .project-image::after,
+    .project-image:focus-visible::after {
+      opacity: 1;
+      transform: none;
+    }
+
+    .project-image:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* ===== LIGHTBOX ===== */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 56px 16px 70px;
+      background: rgba(11, 11, 11, .95);
+      backdrop-filter: blur(10px);
+    }
+
+    .lightbox.open {
+      display: flex;
+      animation: fadeIn .25s ease;
+    }
+
+    .lightbox img {
+      max-width: min(100%, 900px);
+      max-height: 100%;
+      object-fit: contain;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+    }
+
+    .lightbox-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .lightbox-caption b {
+      color: var(--text);
+      font-size: 14px;
+      margin-right: 8px;
+    }
+
+    .lb-btn {
+      position: absolute;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      color: var(--text);
+      background: rgba(20, 20, 20, .85);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      font-size: 18px;
+      transition: .2s;
+    }
+
+    .lb-btn:hover {
+      background: var(--accent);
+      color: #111;
+      border-color: var(--accent);
+    }
+
+    .lb-close { top: 14px; right: 14px; }
+    .lb-prev  { left: 14px; top: 50%; transform: translateY(-50%); }
+    .lb-next  { right: 14px; top: 50%; transform: translateY(-50%); }
 
     .project-info {
       display: flex;
@@ -481,81 +593,97 @@
           </div>
 
           <div class="gallery">
-            <!-- Ganti nama file gambar sesuai karya lu -->
-
-            <article class="project" data-category="esports">
-              <div class="project-image">
-                <img src="work-01.jpg" alt="Esports poster design" loading="lazy">
-              </div>
+            <article class="project" data-category="esports poster">
+              <button class="project-image" type="button"
+                      data-full="work-01.jpg"
+                      data-title="Let's Kill It" data-sub="Esports / Poster Design"
+                      aria-label="Lihat Let's Kill It lebih besar">
+                <img src="work-01-thumb.jpg" alt="Esports poster of a player reaching toward the camera with green energy on an orange background" loading="lazy">
+              </button>
               <div class="project-info">
                 <div>
-                  <h3>Competitive Spirit</h3>
+                  <h3>Let's Kill It</h3>
                   <p>Esports / Poster Design</p>
                 </div>
                 <span class="project-number">01</span>
               </div>
             </article>
 
-            <article class="project" data-category="poster">
-              <div class="project-image">
-                <img src="work-02.jpg" alt="Editorial poster artwork" loading="lazy">
-              </div>
+            <article class="project" data-category="esports">
+              <button class="project-image" type="button"
+                      data-full="work-02.jpg"
+                      data-title="Next Tour" data-sub="Esports / Scene Composition"
+                      aria-label="Lihat Next Tour lebih besar">
+                <img src="work-02-thumb.jpg" alt="Esports team sitting around a trophy in a vintage red living room" loading="lazy">
+              </button>
               <div class="project-info">
                 <div>
-                  <h3>Visual Impact</h3>
-                  <p>Poster / Art Direction</p>
+                  <h3>Next Tour</h3>
+                  <p>Esports / Scene Composition</p>
                 </div>
                 <span class="project-number">02</span>
               </div>
             </article>
 
-            <article class="project" data-category="type">
-              <div class="project-image">
-                <img src="work-03.jpg" alt="Typography design" loading="lazy">
-              </div>
+            <article class="project" data-category="esports poster type">
+              <button class="project-image" type="button"
+                      data-full="work-03.jpg"
+                      data-title="Big Three Fire Up" data-sub="Esports / Collage & Typography"
+                      aria-label="Lihat Big Three Fire Up lebih besar">
+                <img src="work-03-thumb.jpg" alt="Collage-style esports poster with cut-out portraits and ransom-note typography" loading="lazy">
+              </button>
               <div class="project-info">
                 <div>
-                  <h3>Type Experiment</h3>
-                  <p>Typography / Lettering</p>
+                  <h3>Big Three Fire Up</h3>
+                  <p>Esports / Collage & Typography</p>
                 </div>
                 <span class="project-number">03</span>
               </div>
             </article>
 
             <article class="project" data-category="other">
-              <div class="project-image">
-                <img src="work-04.jpg" alt="Digital artwork" loading="lazy">
-              </div>
+              <button class="project-image" type="button"
+                      data-full="work-04.jpg"
+                      data-title="Here Lies" data-sub="Digital Art / Photo Manipulation"
+                      aria-label="Lihat Here Lies lebih besar">
+                <img src="work-04-thumb.jpg" alt="Dark cinematic poster of a fallen hero beside a gravestone in a thunderstorm" loading="lazy">
+              </button>
               <div class="project-info">
                 <div>
-                  <h3>Beyond Reality</h3>
-                  <p>Digital Art / Manipulation</p>
+                  <h3>Here Lies</h3>
+                  <p>Digital Art / Photo Manipulation</p>
                 </div>
                 <span class="project-number">04</span>
               </div>
             </article>
 
             <article class="project" data-category="esports">
-              <div class="project-image">
-                <img src="work-05.jpg" alt="Gaming team visual design" loading="lazy">
-              </div>
+              <button class="project-image" type="button"
+                      data-full="work-05.jpg"
+                      data-title="Tactical Hokage" data-sub="Esports / Digital Art"
+                      aria-label="Lihat Tactical Hokage lebih besar">
+                <img src="work-05-thumb.jpg" alt="Esports player in a red cloak with nine glowing tails in front of a stone-carved village" loading="lazy">
+              </button>
               <div class="project-info">
                 <div>
-                  <h3>Game On</h3>
-                  <p>Esports / Visual Design</p>
+                  <h3>Tactical Hokage</h3>
+                  <p>Esports / Digital Art</p>
                 </div>
                 <span class="project-number">05</span>
               </div>
             </article>
 
-            <article class="project" data-category="poster">
-              <div class="project-image">
-                <img src="work-06.jpg" alt="Creative poster artwork" loading="lazy">
-              </div>
+            <article class="project" data-category="poster other">
+              <button class="project-image" type="button"
+                      data-full="work-06.jpg"
+                      data-title="Finalist" data-sub="Sports / Poster Design"
+                      aria-label="Lihat Finalist lebih besar">
+                <img src="work-06-thumb.jpg" alt="World Cup finalist poster with player pin badges and patches on a wooden table" loading="lazy">
+              </button>
               <div class="project-info">
                 <div>
-                  <h3>New Perspectives</h3>
-                  <p>Poster / Creative Design</p>
+                  <h3>Finalist</h3>
+                  <p>Sports / Poster Design</p>
                 </div>
                 <span class="project-number">06</span>
               </div>
@@ -625,6 +753,15 @@
     </div>
   </footer>
 
+  <!-- Lightbox karya -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Preview karya">
+    <button class="lb-btn lb-close" id="lbClose" aria-label="Tutup">✕</button>
+    <button class="lb-btn lb-prev" id="lbPrev" aria-label="Sebelumnya">←</button>
+    <button class="lb-btn lb-next" id="lbNext" aria-label="Berikutnya">→</button>
+    <img id="lbImg" src="" alt="">
+    <div class="lightbox-caption"><b id="lbTitle"></b><span id="lbSub"></span></div>
+  </div>
+
   <script>
     /* ===== TAB / PAGE SWITCHER ===== */
     const pages = document.querySelectorAll(".page");
@@ -674,9 +811,65 @@
         projects.forEach((project) => {
           project.hidden =
             category !== "all" &&
-            project.dataset.category !== category;
+            !project.dataset.category.split(" ").includes(category);
         });
       });
+    });
+
+    /* ===== LIGHTBOX ===== */
+    const lightbox = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lbImg");
+    const lbTitle = document.getElementById("lbTitle");
+    const lbSub = document.getElementById("lbSub");
+    const thumbs = [...document.querySelectorAll(".project-image")];
+    let lbIndex = 0;
+    let lbList = [];
+
+    function visibleThumbs() {
+      return thumbs.filter((t) => !t.closest(".project").hidden);
+    }
+
+    function renderLightbox() {
+      const t = lbList[lbIndex];
+      lbImg.src = t.dataset.full;
+      lbImg.alt = t.querySelector("img").alt;
+      lbTitle.textContent = t.dataset.title;
+      lbSub.textContent = t.dataset.sub;
+    }
+
+    function openLightbox(thumb) {
+      lbList = visibleThumbs();
+      lbIndex = Math.max(0, lbList.indexOf(thumb));
+      renderLightbox();
+      lightbox.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      document.body.style.overflow = "";
+      lbImg.src = "";
+    }
+
+    function stepLightbox(dir) {
+      lbIndex = (lbIndex + dir + lbList.length) % lbList.length;
+      renderLightbox();
+    }
+
+    thumbs.forEach((t) => t.addEventListener("click", () => openLightbox(t)));
+    document.getElementById("lbClose").addEventListener("click", closeLightbox);
+    document.getElementById("lbPrev").addEventListener("click", () => stepLightbox(-1));
+    document.getElementById("lbNext").addEventListener("click", () => stepLightbox(1));
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (!lightbox.classList.contains("open")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") stepLightbox(-1);
+      if (e.key === "ArrowRight") stepLightbox(1);
     });
 
     document.getElementById("year").textContent =
