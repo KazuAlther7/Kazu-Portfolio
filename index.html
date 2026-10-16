@@ -1234,17 +1234,20 @@
       }
     }
 
-    /* ===== GLASS COLUMNS (Apple-style glass; stroke muncul saat mouse mendekat) ===== */
+    /* ===== GLASS COLUMNS (Apple-style glass; highlight & stroke mengikuti arah kursor) ===== */
     @property --ang {
       syntax: "<angle>";
-      inherits: false;
+      inherits: true;
       initial-value: 0deg;
     }
 
-    :is(.about-info div, .skills span, .explorer-bar, .contact-panel, .contact-card, .ach, .sw-tile, .sw-tag) {
+    :is(.about-info div, .skills span, .explorer-bar, .contact-panel, .contact-card, .ach, .sw-tile, .sw-tag, .home-tab, .review, .rv-summary, .rv-cta) {
+      --near: 0;
+      --ang: 0deg;
       position: relative;
       border: 1px solid rgba(255, 255, 255, .13);
       background:
+        radial-gradient(150px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, calc(.17 * var(--near))), transparent 70%),
         radial-gradient(120% 90% at 0% 0%, rgba(255, 255, 255, .20), transparent 52%),
         radial-gradient(90% 70% at 100% 100%, rgba(213, 255, 85, .10), transparent 60%),
         linear-gradient(145deg, rgba(255, 255, 255, .11), rgba(255, 255, 255, .03) 50%, rgba(255, 255, 255, .07));
@@ -1255,36 +1258,30 @@
         inset 0 -1px 0 rgba(255, 255, 255, .05),
         inset 0 0 22px rgba(255, 255, 255, .035),
         0 12px 32px rgba(0, 0, 0, .42);
+      transition: --ang .14s linear;
     }
 
-    /* stroke: tersembunyi, baru menyala & berputar saat mouse mendekat (.is-near dari JS) */
-    :is(.about-info div, .skills span, .explorer-bar, .contact-panel, .contact-card, .ach, .sw-tile, .sw-tag)::before {
+    /* stroke: busur terang yang menghadap kursor, intensitas naik saat kursor mendekat */
+    :is(.about-info div, .skills span, .explorer-bar, .contact-panel, .contact-card, .ach, .sw-tile, .sw-tag, .home-tab, .review, .rv-summary, .rv-cta)::before {
       content: "";
       position: absolute;
       inset: -1px;
       padding: 1.5px;
       border-radius: inherit;
       pointer-events: none;
-      opacity: 0;
-      transition: opacity .35s ease;
-      background: conic-gradient(from var(--ang),
-        transparent 0deg 215deg,
-        rgba(213, 255, 85, .15) 250deg,
-        var(--accent) 310deg,
-        #ffffff 345deg,
+      opacity: var(--near);
+      background: conic-gradient(from calc(var(--ang) - 80deg),
+        transparent 0deg,
+        rgba(213, 255, 85, .10) 18deg,
+        rgba(213, 255, 85, .65) 55deg,
+        #ffffff 80deg,
+        rgba(213, 255, 85, .65) 105deg,
+        rgba(213, 255, 85, .10) 142deg,
+        transparent 160deg,
         transparent 360deg);
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor;
       mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-    }
-
-    :is(.about-info div, .skills span, .explorer-bar, .contact-panel, .contact-card, .ach, .sw-tile, .sw-tag).is-near::before {
-      opacity: 1;
-      animation: strokeSpin 3.4s linear infinite;
-    }
-
-    @keyframes strokeSpin {
-      to { --ang: 360deg; }
     }
 
     /* --- bentuk tiap kolom --- */
@@ -1530,6 +1527,289 @@
       }
     }
 
+    /* ===== HOME: TOMBOL SEMUA TAB ===== */
+    .home-nav {
+      margin-top: 52px;
+    }
+
+    .home-nav-label {
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .home-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .home-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      min-width: 0;
+      padding: 18px 18px 16px;
+      border-radius: 16px;
+      cursor: pointer;
+      text-align: left;
+      color: var(--text);
+      font: inherit;
+      transition: transform .25s;
+    }
+
+    .home-tab:hover,
+    .home-tab:focus-visible {
+      outline: none;
+      transform: translateY(-4px);
+    }
+
+    .ht-no {
+      color: var(--accent);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+    }
+
+    .ht-title {
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: -.5px;
+      line-height: 1.2;
+    }
+
+    .ht-desc {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .ht-go {
+      margin-top: auto;
+      padding-top: 8px;
+      color: var(--accent);
+      font-size: 18px;
+      line-height: 1;
+      transition: transform .25s;
+    }
+
+    .home-tab:hover .ht-go {
+      transform: translate(3px, -3px);
+    }
+
+    /* ===== REVIEWS ===== */
+    .rv-summary {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px 28px;
+      margin-bottom: 22px;
+      padding: 22px 28px;
+      border-radius: 20px;
+    }
+
+    .rv-score {
+      font-size: clamp(44px, 7vw, 64px);
+      font-weight: 900;
+      letter-spacing: -3px;
+      line-height: 1;
+    }
+
+    .rv-score small {
+      color: var(--muted);
+      font-size: .38em;
+      font-weight: normal;
+      letter-spacing: 0;
+    }
+
+    .rv-sum-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .rv-sum-meta span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stars {
+      --r: 5;
+      display: inline-block;
+      font-size: 17px;
+      letter-spacing: 3px;
+      line-height: 1;
+      color: transparent;
+      background: linear-gradient(90deg, var(--accent) calc(var(--r) / 5 * 100%), rgba(255, 255, 255, .2) 0);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .reviews {
+      columns: 3 300px;
+      column-gap: 16px;
+    }
+
+    .review {
+      display: block;
+      margin: 0 0 16px;
+      padding: 26px 24px 22px;
+      break-inside: avoid;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .rv-mark {
+      position: absolute;
+      right: 18px;
+      top: -6px;
+      color: var(--accent);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 110px;
+      line-height: 1;
+      opacity: .16;
+      pointer-events: none;
+    }
+
+    .rv-text {
+      position: relative;
+      margin: 16px 0 22px;
+      color: #e6e6e6;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .rv-foot {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .rv-avatar {
+      flex: none;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 50%;
+      background: linear-gradient(145deg, var(--accent), #8fbb1f);
+      color: #101010;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .rv-avatar img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .rv-who {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .rv-name {
+      font-size: 14px;
+    }
+
+    .rv-role {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .rv-tag {
+      flex: none;
+      padding: 4px 9px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 999px;
+      color: #ccc;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .rv-empty {
+      padding: 50px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .rv-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 6px;
+      padding: 26px 30px;
+      border-radius: 20px;
+    }
+
+    .rv-cta h3 {
+      font-size: clamp(20px, 3vw, 28px);
+      letter-spacing: -1px;
+      line-height: 1.15;
+    }
+
+    .rv-cta p {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .home-nav-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .home-nav {
+        margin-top: 40px;
+      }
+
+      .home-nav-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .home-tab {
+        padding: 15px 14px 13px;
+      }
+
+      .home-tab:last-child {
+        grid-column: 1 / -1;
+      }
+
+      .ht-desc {
+        font-size: 11px;
+      }
+
+      .rv-summary {
+        padding: 18px 20px;
+      }
+
+      .review {
+        padding: 22px 20px 18px;
+      }
+
+      .rv-cta {
+        padding: 22px 20px;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .page.active {
         animation: none;
@@ -1539,8 +1819,7 @@
       .sheet,
       .folder-hint,
       .sw-float,
-      .sw-burst,
-      :is(.about-info div, .skills span, .explorer-bar, .contact-panel, .contact-card, .ach, .sw-tile, .sw-tag)::before {
+      .sw-burst {
         animation: none !important;
       }
 
@@ -1561,6 +1840,7 @@
         <a data-page="about">About</a>
         <a data-page="work">Works</a>
         <a data-page="achievements">Achievements</a>
+        <a data-page="reviews">Reviews</a>
         <a data-page="contact">Contact</a>
       </div>
     </nav>
@@ -1582,6 +1862,42 @@
         <div class="hero-actions">
           <button class="btn primary" data-page="work">EXPLORE MY WORK ↘</button>
           <button class="btn" data-page="contact">LET'S CONNECT ↗</button>
+        </div>
+
+        <div class="home-nav" role="navigation" aria-label="All pages">
+          <p class="home-nav-label">Browse all pages</p>
+          <div class="home-nav-grid">
+            <button class="home-tab" type="button" data-page="about">
+              <span class="ht-no">01</span>
+              <span class="ht-title">About</span>
+              <span class="ht-desc">Who I am &amp; the software I use.</span>
+              <span class="ht-go">↗</span>
+            </button>
+            <button class="home-tab" type="button" data-page="work">
+              <span class="ht-no">02</span>
+              <span class="ht-title">Works</span>
+              <span class="ht-desc">Open the folder of selected projects.</span>
+              <span class="ht-go">↗</span>
+            </button>
+            <button class="home-tab" type="button" data-page="achievements">
+              <span class="ht-no">03</span>
+              <span class="ht-title">Achievements</span>
+              <span class="ht-desc">Awards &amp; milestones so far.</span>
+              <span class="ht-go">↗</span>
+            </button>
+            <button class="home-tab" type="button" data-page="reviews">
+              <span class="ht-no">04</span>
+              <span class="ht-title">Reviews</span>
+              <span class="ht-desc">What clients say about working with me.</span>
+              <span class="ht-go">↗</span>
+            </button>
+            <button class="home-tab" type="button" data-page="contact">
+              <span class="ht-no">05</span>
+              <span class="ht-title">Contact</span>
+              <span class="ht-desc">Got a project? Let's talk.</span>
+              <span class="ht-go">↗</span>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -1991,6 +2307,105 @@
       </div>
     </section>
 
+    <!-- ===== HALAMAN REVIEWS ===== -->
+    <section class="page" id="page-reviews">
+      <div class="section">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">Client Testimonials</div>
+              <h2>Reviews.</h2>
+            </div>
+            <p>Kind words from people I've worked with.</p>
+          </div>
+
+          <div class="rv-summary" id="rvSummary">
+            <div class="rv-score"><span id="rvAvg">5.0</span><small>/5</small></div>
+            <div class="rv-sum-meta">
+              <div class="stars" id="rvStars" style="--r:5" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <span id="rvCount">Based on 0 client reviews</span>
+            </div>
+          </div>
+
+          <!--
+            CARA ISI: ganti teks di tiap <article class="review"> dengan testimoni client lu.
+            - data-rating="5" dan style="--r:5" = jumlah bintang (boleh desimal, mis. 4.5)
+            - Foto client (opsional): isi <span class="rv-avatar"></span> dengan
+              <img src="nama-foto.jpg" alt="Nama Client">. Kalau kosong, otomatis muncul inisial nama.
+            - Mau nambah? copy satu blok <article class="review">...</article>.
+            - Skor rata-rata & jumlah review di atas dihitung otomatis dari data-rating.
+          -->
+          <div class="reviews" id="reviews">
+            <article class="review" data-rating="5">
+              <span class="rv-mark" aria-hidden="true">&ldquo;</span>
+              <div class="stars" style="--r:5" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <blockquote class="rv-text">Tulis testimoni dari client di sini. Boleh singkat, boleh panjang — kartu akan menyesuaikan tinggi teksnya otomatis.</blockquote>
+              <div class="rv-foot">
+                <span class="rv-avatar"></span>
+                <div class="rv-who">
+                  <b class="rv-name">Nama Client</b>
+                  <span class="rv-role">Jabatan &middot; Brand / Tim</span>
+                </div>
+                <span class="rv-tag">Esports</span>
+              </div>
+            </article>
+
+            <article class="review" data-rating="5">
+              <span class="rv-mark" aria-hidden="true">&ldquo;</span>
+              <div class="stars" style="--r:5" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <blockquote class="rv-text">Contoh testimoni yang lebih panjang: ceritakan bagaimana hasil desain membantu client, seberapa cepat pengerjaannya, dan bagaimana pengalaman bekerja sama. Hapus teks ini lalu ganti dengan testimoni asli.</blockquote>
+              <div class="rv-foot">
+                <span class="rv-avatar"></span>
+                <div class="rv-who">
+                  <b class="rv-name">Nama Client</b>
+                  <span class="rv-role">Jabatan &middot; Brand / Tim</span>
+                </div>
+                <span class="rv-tag">Poster</span>
+              </div>
+            </article>
+
+            <article class="review" data-rating="5">
+              <span class="rv-mark" aria-hidden="true">&ldquo;</span>
+              <div class="stars" style="--r:5" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <blockquote class="rv-text">Testimoni singkat dari client.</blockquote>
+              <div class="rv-foot">
+                <span class="rv-avatar"></span>
+                <div class="rv-who">
+                  <b class="rv-name">Nama Client</b>
+                  <span class="rv-role">Jabatan &middot; Brand / Tim</span>
+                </div>
+                <span class="rv-tag">Typography</span>
+              </div>
+            </article>
+
+            <article class="review" data-rating="5">
+              <span class="rv-mark" aria-hidden="true">&ldquo;</span>
+              <div class="stars" style="--r:5" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <blockquote class="rv-text">Tambahkan testimoni berikutnya dengan menyalin satu blok &lt;article class=&quot;review&quot;&gt; lalu mengganti isinya.</blockquote>
+              <div class="rv-foot">
+                <span class="rv-avatar"></span>
+                <div class="rv-who">
+                  <b class="rv-name">Nama Client</b>
+                  <span class="rv-role">Jabatan &middot; Brand / Tim</span>
+                </div>
+                <span class="rv-tag">Digital Art</span>
+              </div>
+            </article>
+          </div>
+
+          <p class="rv-empty" id="rvEmpty" hidden>Belum ada review. Testimoni client akan muncul di sini.</p>
+
+          <div class="rv-cta">
+            <div>
+              <h3>Want to be the next happy client?</h3>
+              <p>Let's talk about your project.</p>
+            </div>
+            <button class="btn primary" type="button" data-page="contact">GET IN TOUCH &#8599;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== HALAMAN CONTACT ===== -->
     <section class="page" id="page-contact">
       <div class="section">
@@ -2047,7 +2462,7 @@
     const pages = document.querySelectorAll(".page");
     const pageTriggers = document.querySelectorAll("[data-page]");
     const navLinks = document.querySelectorAll(".nav-links a");
-    const validPages = ["home", "work", "about", "achievements", "contact"];
+    const validPages = ["home", "work", "about", "achievements", "reviews", "contact"];
 
     function showPage(name, updateHash = true) {
       if (!validPages.includes(name)) name = "home";
@@ -2407,69 +2822,132 @@
       if (avatar.classList.contains("open")) swPlace();
     });
 
-    /* ===== STROKE GLASS: hanya muncul saat mouse mendekat ===== */
-    const GLASS_SEL = ".about-info div, .skills span, .explorer-bar, .contact-panel, .contact-card, .ach, .sw-tile, .sw-tag";
-    const NEAR_ON = 70;
-    const NEAR_OFF = 100;
+    /* ===== STROKE GLASS: highlight mengikuti arah kursor ===== */
+    const GLASS_SEL = ".about-info div, .skills span, .explorer-bar, .contact-panel, .contact-card, .ach, .sw-tile, .sw-tag, .home-tab, .review, .rv-summary, .rv-cta";
+    const NEAR_R = 120;           /* jarak (px) kursor mulai terasa */
     let lastPt = null;
-    let nearTick = false;
+    let glassTick = false;
     let touchTimer = 0;
+    const glassAng = new WeakMap();
+    const glassLit = new WeakSet();
 
-    function updateNear() {
-      nearTick = false;
+    function updateGlass() {
+      glassTick = false;
       if (!lastPt) return;
 
       const els = [...document.querySelectorAll(GLASS_SEL)];
-      const rects = els.map((el) => el.getBoundingClientRect());
+      const rects = els.map((el) => el.getBoundingClientRect());   /* baca semua dulu */
 
       els.forEach((el, i) => {
         const r = rects[i];
         if (!r.width || !r.height) {
-          el.classList.remove("is-near");
+          if (glassLit.has(el)) clearGlass(el);
           return;
         }
+
         const dx = Math.max(r.left - lastPt.x, 0, lastPt.x - r.right);
         const dy = Math.max(r.top - lastPt.y, 0, lastPt.y - r.bottom);
         const dist = Math.hypot(dx, dy);
-        const on = el.classList.contains("is-near");
 
-        if (!on && dist <= NEAR_ON) el.classList.add("is-near");
-        else if (on && dist >= NEAR_OFF) el.classList.remove("is-near");
+        if (dist >= NEAR_R) {
+          if (glassLit.has(el)) clearGlass(el);
+          return;
+        }
+
+        const near = 1 - dist / NEAR_R;
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        const vx = lastPt.x - cx;
+        const vy = lastPt.y - cy;
+
+        let ang = glassAng.get(el);
+        if (Math.hypot(vx, vy) > 3) {
+          const target = ((Math.atan2(vx, -vy) * 180) / Math.PI + 360) % 360;
+          if (ang === undefined) ang = target;
+          else ang += ((target - ang + 540) % 360) - 180;      /* jalur terpendek, tanpa berputar balik */
+          glassAng.set(el, ang);
+        }
+
+        glassLit.add(el);
+        el.style.setProperty("--near", near.toFixed(3));
+        el.style.setProperty("--mx", lastPt.x - r.left + "px");
+        el.style.setProperty("--my", lastPt.y - r.top + "px");
+        if (ang !== undefined) el.style.setProperty("--ang", ang.toFixed(1) + "deg");
       });
     }
 
-    function scheduleNear() {
-      if (nearTick) return;
-      nearTick = true;
-      requestAnimationFrame(updateNear);
+    function clearGlass(el) {
+      glassLit.delete(el);
+      glassAng.delete(el);
+      el.style.removeProperty("--near");
+      el.style.removeProperty("--mx");
+      el.style.removeProperty("--my");
+      el.style.removeProperty("--ang");
+    }
+
+    function scheduleGlass() {
+      if (glassTick) return;
+      glassTick = true;
+      requestAnimationFrame(updateGlass);
     }
 
     window.addEventListener("pointermove", (e) => {
       if (e.pointerType === "touch") return;
       lastPt = { x: e.clientX, y: e.clientY };
-      scheduleNear();
+      scheduleGlass();
     }, { passive: true });
 
     window.addEventListener("scroll", () => {
-      if (lastPt) scheduleNear();
+      if (lastPt) scheduleGlass();
     }, { passive: true });
 
     document.addEventListener("pointerleave", () => {
       lastPt = { x: -9999, y: -9999 };
-      scheduleNear();
+      scheduleGlass();
     });
 
-    /* layar sentuh: stroke menyala sebentar di area yang disentuh */
+    /* layar sentuh: highlight muncul sebentar di titik yang disentuh */
     window.addEventListener("pointerdown", (e) => {
       if (e.pointerType !== "touch") return;
       lastPt = { x: e.clientX, y: e.clientY };
-      updateNear();
+      updateGlass();
       clearTimeout(touchTimer);
       touchTimer = setTimeout(() => {
         lastPt = { x: -9999, y: -9999 };
-        updateNear();
-      }, 1400);
+        updateGlass();
+      }, 1200);
     }, { passive: true });
+
+    /* ===== REVIEWS: inisial, skor rata-rata, jumlah ===== */
+    (function initReviews() {
+      const cards = [...document.querySelectorAll(".review")];
+
+      cards.forEach((c) => {
+        const av = c.querySelector(".rv-avatar");
+        if (av && !av.children.length && !av.textContent.trim()) {
+          const name = (c.querySelector(".rv-name")?.textContent || "").trim();
+          av.textContent = name
+            .split(/\s+/)
+            .filter(Boolean)
+            .slice(0, 2)
+            .map((w) => w[0].toUpperCase())
+            .join("") || "★";
+        }
+      });
+
+      const ratings = cards.map((c) => parseFloat(c.dataset.rating)).filter((n) => !isNaN(n));
+      const avg = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0;
+
+      document.getElementById("rvAvg").textContent = avg.toFixed(1);
+      document.getElementById("rvStars").style.setProperty("--r", avg.toFixed(2));
+      document.getElementById("rvCount").textContent =
+        "Based on " + cards.length + " client review" + (cards.length === 1 ? "" : "s");
+
+      if (!cards.length) {
+        document.getElementById("rvSummary").hidden = true;
+        document.getElementById("rvEmpty").hidden = false;
+      }
+    })();
 
     document.getElementById("year").textContent =
       new Date().getFullYear();
