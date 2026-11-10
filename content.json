@@ -56,6 +56,20 @@
   },
   "works": [
     {
+      "file": "works/work-07.jpg",
+      "thumb": "works/work-07-thumb.jpg",
+      "w": 900,
+      "h": 725,
+      "format": "JPEG",
+      "cats": [
+        "other"
+      ],
+      "title": "Work 07",
+      "sub": "Digital Art",
+      "alt": "Work 07 — Digital Art",
+      "added": "2026-11-10"
+    },
+    {
       "file": "work-01.jpg",
       "thumb": "work-01-thumb.jpg",
       "title": "Let's Kill It",
