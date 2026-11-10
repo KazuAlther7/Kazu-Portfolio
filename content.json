@@ -1,0 +1,194 @@
+{
+  "site": {
+    "title": "Kazu® — Graphic Designer",
+    "email": "juliandoniel07@gmail.com",
+    "instagram": "https://instagram.com/kazu.png_?mdxt=MWExd3R6amJkajUzbg%3D%3D",
+    "igHandle": "@kazu.png_",
+    "tagline": "Designed with purpose. Built with passion."
+  },
+  "home": {
+    "eyebrow": "Independent Graphic Designer",
+    "line1": "IDEAS INTO",
+    "line2": "VISUALS.",
+    "text": "Crafting bold visuals, striking compositions, and memorable designs. Welcome to my creative space."
+  },
+  "sec": {
+    "work": {
+      "eyebrow": "Selected Projects / 2026",
+      "title": "Featured Works.",
+      "sub": "A selection of my visual experiments."
+    },
+    "achievements": {
+      "eyebrow": "Recognition / Milestones",
+      "title": "Achievements.",
+      "sub": "Awards and milestones along my design journey."
+    },
+    "reviews": {
+      "eyebrow": "Client Testimonials",
+      "title": "Reviews.",
+      "sub": "Kind words from people I've worked with."
+    }
+  },
+  "about": {
+    "eyebrow": "A little about me",
+    "h1": "Design with",
+    "h2": "purpose.",
+    "h3": "Made to stand out.",
+    "p1": "Hi, I'm Kazu — a graphic designer passionate about creating expressive visuals and strong visual identities.",
+    "p2": "I explore composition, typography, color, and imagery to turn ideas into impactful visual experiences — from esports posters and collage layouts to cinematic digital art.",
+    "name": "Kazu Altr",
+    "role": "Graphic Designer",
+    "focus": "Esports & Poster Design",
+    "experience": "3 Years Graphic Design Experience",
+    "software": "Canva · ibisPaint X · Alight Motion · CapCut",
+    "photo": "about-photo.webp",
+    "skills": [
+      "Graphic Design",
+      "Esports Design",
+      "Typography",
+      "Photo Manipulation",
+      "Art Direction"
+    ]
+  },
+  "contact": {
+    "eyebrow": "Have a project in mind?",
+    "text": "Open for creative projects and collaborations."
+  },
+  "works": [
+    {
+      "file": "work-01.jpg",
+      "thumb": "work-01-thumb.jpg",
+      "title": "Let's Kill It",
+      "sub": "Esports / Poster Design",
+      "cats": [
+        "esports",
+        "poster"
+      ],
+      "alt": "Esports poster of a player reaching toward the camera with green energy on an orange background",
+      "w": 1500,
+      "h": 2000,
+      "format": "JPEG"
+    },
+    {
+      "file": "work-02.jpg",
+      "thumb": "work-02-thumb.jpg",
+      "title": "Next Tour",
+      "sub": "Esports / Scene Composition",
+      "cats": [
+        "esports"
+      ],
+      "alt": "Esports team sitting around a trophy in a vintage red living room",
+      "w": 1500,
+      "h": 2000,
+      "format": "JPEG"
+    },
+    {
+      "file": "work-03.jpg",
+      "thumb": "work-03-thumb.jpg",
+      "title": "Big Three Fire Up",
+      "sub": "Esports / Collage & Typography",
+      "cats": [
+        "esports",
+        "poster",
+        "type"
+      ],
+      "alt": "Collage-style esports poster with cut-out portraits and ransom-note typography",
+      "w": 1500,
+      "h": 2000,
+      "format": "JPEG"
+    },
+    {
+      "file": "work-04.jpg",
+      "thumb": "work-04-thumb.jpg",
+      "title": "Here Lies",
+      "sub": "Digital Art / Photo Manipulation",
+      "cats": [
+        "other"
+      ],
+      "alt": "Dark cinematic poster of a fallen hero beside a gravestone in a thunderstorm",
+      "w": 1500,
+      "h": 2000,
+      "format": "JPEG"
+    },
+    {
+      "file": "work-05.jpg",
+      "thumb": "work-05-thumb.jpg",
+      "title": "Tactical Hokage",
+      "sub": "Esports / Digital Art",
+      "cats": [
+        "esports"
+      ],
+      "alt": "Esports player in a red cloak with nine glowing tails in front of a stone-carved village",
+      "w": 1500,
+      "h": 2000,
+      "format": "JPEG"
+    },
+    {
+      "file": "work-06.jpg",
+      "thumb": "work-06-thumb.jpg",
+      "title": "Finalist",
+      "sub": "Sports / Poster Design",
+      "cats": [
+        "poster",
+        "other"
+      ],
+      "alt": "World Cup finalist poster with player pin badges and patches on a wooden table",
+      "w": 1500,
+      "h": 2000,
+      "format": "JPEG"
+    }
+  ],
+  "achievements": [
+    {
+      "year": "20XX",
+      "title": "Nama Penghargaan / Prestasi",
+      "org": "Penyelenggara / Event",
+      "desc": "Tulis deskripsi singkat tentang prestasi ini — apa yang lu capai dan kenapa ini berarti buat lu.",
+      "tag": "Award"
+    },
+    {
+      "year": "20XX",
+      "title": "Nama Penghargaan / Prestasi",
+      "org": "Penyelenggara / Event",
+      "desc": "Tulis deskripsi singkat tentang prestasi ini — apa yang lu capai dan kenapa ini berarti buat lu.",
+      "tag": "Competition"
+    },
+    {
+      "year": "20XX",
+      "title": "Nama Penghargaan / Prestasi",
+      "org": "Penyelenggara / Event",
+      "desc": "Tulis deskripsi singkat tentang prestasi ini — apa yang lu capai dan kenapa ini berarti buat lu.",
+      "tag": "Milestone"
+    }
+  ],
+  "reviews": [
+    {
+      "rating": 5,
+      "text": "Tulis testimoni dari client di sini. Boleh singkat, boleh panjang — kartu akan menyesuaikan tinggi teksnya otomatis.",
+      "name": "Nama Client",
+      "role": "Jabatan · Brand / Tim",
+      "tag": "Esports"
+    },
+    {
+      "rating": 5,
+      "text": "Contoh testimoni yang lebih panjang: ceritakan bagaimana hasil desain membantu client, seberapa cepat pengerjaannya, dan bagaimana pengalaman bekerja sama. Hapus teks ini lalu ganti dengan testimoni asli.",
+      "name": "Nama Client",
+      "role": "Jabatan · Brand / Tim",
+      "tag": "Poster"
+    },
+    {
+      "rating": 5,
+      "text": "Testimoni singkat dari client.",
+      "name": "Nama Client",
+      "role": "Jabatan · Brand / Tim",
+      "tag": "Typography"
+    },
+    {
+      "rating": 5,
+      "text": "Tambahkan testimoni berikutnya dengan menyalin satu blok <article class=\"review\"> lalu mengganti isinya.",
+      "name": "Nama Client",
+      "role": "Jabatan · Brand / Tim",
+      "tag": "Digital Art"
+    }
+  ]
+}
