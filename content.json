@@ -34,9 +34,9 @@
     "h1": "Design with",
     "h2": "purpose.",
     "h3": "Made to stand out.",
-    "p1": "Hi, I'm Kazu — a graphic designer passionate about creating expressive visuals and strong visual identities.",
+    "p1": "Hi, I'm Kazu — a Graphic Designer passionate about creating expressive visuals and strong visual identities.",
     "p2": "I explore composition, typography, color, and imagery to turn ideas into impactful visual experiences — from esports posters and collage layouts to cinematic digital art.",
-    "name": "Kazu Altr",
+    "name": "Kazu Alther",
     "role": "Graphic Designer",
     "focus": "Esports & Poster Design",
     "experience": "3 Years Graphic Design Experience",
@@ -45,9 +45,9 @@
     "skills": [
       "Graphic Design",
       "Esports Design",
-      "Typography",
+      "Sports Design",
       "Photo Manipulation",
-      "Art Direction"
+      "Video Editor"
     ]
   },
   "contact": {
@@ -140,25 +140,14 @@
   ],
   "achievements": [
     {
-      "year": "20XX",
-      "title": "Nama Penghargaan / Prestasi",
-      "org": "Penyelenggara / Event",
-      "desc": "Tulis deskripsi singkat tentang prestasi ini — apa yang lu capai dan kenapa ini berarti buat lu.",
-      "tag": "Award"
-    },
-    {
-      "year": "20XX",
-      "title": "Nama Penghargaan / Prestasi",
-      "org": "Penyelenggara / Event",
-      "desc": "Tulis deskripsi singkat tentang prestasi ini — apa yang lu capai dan kenapa ini berarti buat lu.",
-      "tag": "Competition"
-    },
-    {
-      "year": "20XX",
-      "title": "Nama Penghargaan / Prestasi",
-      "org": "Penyelenggara / Event",
-      "desc": "Tulis deskripsi singkat tentang prestasi ini — apa yang lu capai dan kenapa ini berarti buat lu.",
-      "tag": "Milestone"
+      "year": "2026",
+      "title": "JUARA 1 SUPER BRIEF AI WEEK 1",
+      "org": "PUBGM ESPORT INDONESIA OFFICIAL & CREATIVEZONE.ID",
+      "desc": "JUARA 1 SUPER BRIEF AI WEEK 1",
+      "tag": "COMPETITION",
+      "proofs": [
+        "achievements/proof-mwyql4tk-l83x.jpg"
+      ]
     }
   ],
   "reviews": [
