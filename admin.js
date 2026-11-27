@@ -81,6 +81,31 @@
     if (bar) { $("#adm-st", bar).textContent = "● Ada perubahan belum dipublish"; $("#adm-st", bar).className = "dirty"; $('[data-b="pub"]', bar).disabled = false; }
   }
 
+  const dropProof = (u) => { if (typeof u === "string") drop(u); else { drop(u.src); drop(u.thumb); } };
+  const proofThumb = (u) => (typeof u === "string" ? u : u.thumb);
+
+  /* thumbnail halaman 1 PDF (pdf.js dari CDN; kalau gagal dimuat, pakai kartu "PDF") */
+  async function pdfThumb(file) {
+    let c;
+    try {
+      const CDN = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+      if (!window.pdfjsLib) await new Promise((ok, no) => { const s = document.createElement("script"); s.src = CDN + "pdf.min.js"; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = CDN + "pdf.worker.min.js";
+      const doc = await window.pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+      const pg = await doc.getPage(1);
+      const vp = pg.getViewport({ scale: 1000 / pg.getViewport({ scale: 1 }).width });
+      c = document.createElement("canvas"); c.width = vp.width; c.height = vp.height;
+      const x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height);
+      await pg.render({ canvasContext: x, viewport: vp }).promise;
+    } catch (e) {
+      c = document.createElement("canvas"); c.width = 800; c.height = 1040;
+      const x = c.getContext("2d"); x.fillStyle = "#1b1b1b"; x.fillRect(0, 0, 800, 1040);
+      x.textAlign = "center"; x.fillStyle = "#d5ff55"; x.font = "700 150px Arial"; x.fillText("PDF", 400, 520);
+      x.fillStyle = "#bbb"; x.font = "30px Arial"; x.fillText(file.name.slice(0, 28), 400, 590);
+    }
+    return new Promise((r) => c.toBlob(r, "image/jpeg", 0.85));
+  }
+
   /* put: simpan blob (di-commit saat Publish), kembalikan path relatif di repo. drop: hapus file dari repo. */
   function put(path, blob) { files[path] = blob; S.preview[path] = URL.createObjectURL(blob); return path; }
   function drop(path) { if (!path || /^https?:/.test(path)) return; if (files[path]) delete files[path]; else removed.add(path); }
@@ -111,7 +136,7 @@
         let inp, tag = "label";
         if (f.t === "area") inp = `<textarea name="${f.k}" rows="4">${esc(v)}</textarea>`;
         else if (f.t === "cats") { tag = "div"; inp = Object.keys(LABEL).map((c) => `<label class="adm-c"><input type="checkbox" name="${f.k}" value="${c}" ${(vals[f.k] || []).includes(c) ? "checked" : ""}> ${LABEL[c]}</label>`).join(""); }
-        else if (f.t === "proofs") { tag = "div"; inp = (Array.isArray(v) ? v : []).map((u, k) => `<label class="adm-c"><input type="checkbox" name="rm" value="${k}"> <img src="${esc(S.preview[u] || u)}" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:6px;vertical-align:middle"> hapus</label>`).join("") + `<input type="file" name="${f.k}" accept="image/*" multiple>`; }
+        else if (f.t === "proofs") { tag = "div"; inp = (Array.isArray(v) ? v : []).map((u, k) => `<label class="adm-c"><input type="checkbox" name="rm" value="${k}"> <img src="${esc(S.preview[proofThumb(u)] || proofThumb(u))}" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:6px;vertical-align:middle"> hapus</label>`).join("") + `<input type="file" name="${f.k}" accept="image/*,application/pdf" multiple>`; }
         else if (f.t === "file") inp = `<input type="file" name="${f.k}" accept="image/*">`;
         else inp = `<input name="${f.k}" type="${f.t || "text"}" ${f.t === "number" ? 'min="0" max="5" step="0.5"' : ""} value="${esc(v)}">`;
         box.insertAdjacentHTML("beforeend", `<${tag} class="adm-l"><span>${esc(f.l)}</span>${inp}${f.hint ? `<small>${esc(f.hint)}</small>` : ""}</${tag}>`);
@@ -178,16 +203,21 @@
       { k: "year", l: "Tahun", req: 1 }, { k: "title", l: "Nama penghargaan / prestasi", req: 1 },
       { k: "org", l: "Penyelenggara / event" }, { k: "desc", l: "Deskripsi", t: "area" },
       { k: "tag", l: "Label", hint: "Contoh: Award, Competition, Milestone" },
-      { k: "proofs", l: "Foto bukti (opsional, bisa banyak)", t: "proofs", hint: "Sertifikat, piala, screenshot pengumuman, dll." },
+      { k: "proofs", l: "Bukti (foto atau PDF, bisa banyak)", t: "proofs", hint: "Sertifikat, piala, screenshot pengumuman. PDF tampil sebagai thumbnail halaman 1." },
     ], cur);
     if (!v) return;
     const it = { year: v.year, title: v.title, org: v.org, desc: v.desc, tag: v.tag, proofs: [...(cur.proofs || [])] };
-    v.proofs.rm.sort((x, y) => y - x).forEach((k) => { drop(it.proofs[k]); it.proofs.splice(k, 1); });
+    v.proofs.rm.sort((x, y) => y - x).forEach((k) => { dropProof(it.proofs[k]); it.proofs.splice(k, 1); });
     if (v.proofs.add.length) toast("Memproses foto…", false, true);
     for (const f of v.proofs.add) {
       try {
-        const r = await img(f, 1600, 0.85);
-        it.proofs.push(put(`achievements/proof-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}.jpg`, r.blob));
+        const id = `achievements/proof-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
+        if (f.type === "application/pdf" || /\.pdf$/i.test(f.name)) {
+          if (f.size > 25 * 1024 * 1024) throw new Error("PDF maksimal 25 MB");
+          it.proofs.push({ type: "pdf", src: put(id + ".pdf", f), thumb: put(id + "-thumb.jpg", await pdfThumb(f)) });
+        } else {
+          it.proofs.push(put(id + ".jpg", (await img(f, 1600, 0.85)).blob));
+        }
       } catch (e) { toast("Foto gagal diproses: " + e.message, true); return; }
     }
     toast("");
@@ -246,7 +276,7 @@
       const it = arr[i];
       if (kind === "works") { drop(it.file); drop(it.thumb); }
       if (kind === "reviews") drop(it.avatar);
-      if (kind === "achievements") (it.proofs || []).forEach(drop);
+      if (kind === "achievements") (it.proofs || []).forEach(dropProof);
       arr.splice(i, 1);
     } else {
       const j = a === "u" ? i - 1 : i + 1;

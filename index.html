@@ -1827,10 +1827,11 @@
         transition-duration: 0.01ms !important;
       }
     }
-    .ach-proofs{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .ach-proof{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.04);color:var(--text);font:600 11px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
-    .ach-proof img{width:56px;height:56px;object-fit:cover;border-radius:8px}
-    .ach-proof:hover{border-color:var(--accent)}
+    .ach-proofs{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px}
+    .ach-proof{position:relative;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#111;cursor:zoom-in;line-height:0;transition:border-color .2s,transform .2s}
+    .ach-proof img{display:block;width:auto;height:auto;max-width:100%;max-height:min(340px,55vh)}
+    .ach-proof:hover{border-color:var(--accent);transform:translateY(-2px)}
+    .pdf-badge{position:absolute;top:8px;left:8px;padding:3px 8px;border-radius:6px;background:var(--accent);color:#0b0b0b;font:700 10px/1.4 Arial,sans-serif;letter-spacing:.1em;font-style:normal}
   </style>
 </head>
 
@@ -3018,7 +3019,7 @@
 
     function renderAch(list) {
       document.querySelector(".achievements").innerHTML = list.map((a, i) =>
-        `<article class="ach" data-i="${i}"><span class="ach-year">${esc(a.year)}</span><div class="ach-main"><h3>${esc(a.title)}</h3><p class="ach-org">${esc(a.org)}</p><p class="ach-desc">${esc(a.desc)}</p>${(a.proofs || []).length ? `<div class="ach-proofs">${a.proofs.map((u, k) => `<button type="button" class="ach-proof" data-full="${esc(src(u))}" data-t="${esc(a.title)}" data-y="${esc(a.year)}"><img src="${esc(src(u))}" alt="Bukti ${esc(a.title)}" loading="lazy"><span>Bukti ${k + 1}</span></button>`).join("")}</div>` : ""}</div><span class="ach-tag">${esc(a.tag)}</span></article>`).join("");
+        `<article class="ach" data-i="${i}"><span class="ach-year">${esc(a.year)}</span><div class="ach-main"><h3>${esc(a.title)}</h3><p class="ach-org">${esc(a.org)}</p><p class="ach-desc">${esc(a.desc)}</p>${(a.proofs || []).length ? `<div class="ach-proofs">${a.proofs.map((u) => { const p = typeof u === "string" ? { src: u, thumb: u } : u; return `<button type="button" class="ach-proof" data-full="${esc(src(p.src))}" data-pdf="${p.type === "pdf" ? 1 : ""}" data-t="${esc(a.title)}" data-y="${esc(a.year)}"><img src="${esc(src(p.thumb))}" alt="Bukti ${esc(a.title)}" loading="lazy">${p.type === "pdf" ? '<i class="pdf-badge">PDF</i>' : ""}</button>`; }).join("")}</div>` : ""}</div><span class="ach-tag">${esc(a.tag)}</span></article>`).join("");
     }
 
     function renderReviews(list) {
@@ -3047,7 +3048,8 @@
     document.addEventListener("click", (e) => {
       const b = e.target.closest(".ach-proof");
       if (!b) return;
-      const all = [...b.parentNode.children];
+      if (b.dataset.pdf) { window.open(b.dataset.full, "_blank", "noopener"); return; }
+      const all = [...b.parentNode.children].filter((x) => !x.dataset.pdf);
       lbList = all.map((x) => ({ dataset: { full: x.dataset.full, title: x.dataset.t, sub: "Bukti prestasi", file: x.dataset.y }, querySelector: () => ({ alt: x.dataset.t }) }));
       lbIndex = all.indexOf(b);
       renderLightbox();
