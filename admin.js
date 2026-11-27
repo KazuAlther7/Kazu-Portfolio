@@ -81,8 +81,9 @@
     if (bar) { $("#adm-st", bar).textContent = "● Ada perubahan belum dipublish"; $("#adm-st", bar).className = "dirty"; $('[data-b="pub"]', bar).disabled = false; }
   }
 
-  function put(path, blob) { files[path] = blob; S.preview[path] = URL.createObjectURL(blob); }
-  function drop(path) { if (!path) return; if (files[path]) delete files[path]; else removed.add(path); }
+  /* put: simpan blob (di-commit saat Publish), kembalikan path relatif di repo. drop: hapus file dari repo. */
+  function put(path, blob) { files[path] = blob; S.preview[path] = URL.createObjectURL(blob); return path; }
+  function drop(path) { if (!path || /^https?:/.test(path)) return; if (files[path]) delete files[path]; else removed.add(path); }
 
   /* resize gambar di browser: versi penuh + thumbnail, tanpa tool tambahan */
   async function img(file, max, q, type = "image/jpeg") {
@@ -110,6 +111,7 @@
         let inp, tag = "label";
         if (f.t === "area") inp = `<textarea name="${f.k}" rows="4">${esc(v)}</textarea>`;
         else if (f.t === "cats") { tag = "div"; inp = Object.keys(LABEL).map((c) => `<label class="adm-c"><input type="checkbox" name="${f.k}" value="${c}" ${(vals[f.k] || []).includes(c) ? "checked" : ""}> ${LABEL[c]}</label>`).join(""); }
+        else if (f.t === "proofs") { tag = "div"; inp = (Array.isArray(v) ? v : []).map((u, k) => `<label class="adm-c"><input type="checkbox" name="rm" value="${k}"> <img src="${esc(S.preview[u] || u)}" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:6px;vertical-align:middle"> hapus</label>`).join("") + `<input type="file" name="${f.k}" accept="image/*" multiple>`; }
         else if (f.t === "file") inp = `<input type="file" name="${f.k}" accept="image/*">`;
         else inp = `<input name="${f.k}" type="${f.t || "text"}" ${f.t === "number" ? 'min="0" max="5" step="0.5"' : ""} value="${esc(v)}">`;
         box.insertAdjacentHTML("beforeend", `<${tag} class="adm-l"><span>${esc(f.l)}</span>${inp}${f.hint ? `<small>${esc(f.hint)}</small>` : ""}</${tag}>`);
@@ -122,9 +124,10 @@
         for (const f of fields) {
           const els = [...m.querySelectorAll(`[name="${f.k}"]`)];
           if (f.t === "cats") out[f.k] = els.filter((x) => x.checked).map((x) => x.value);
+          else if (f.t === "proofs") out[f.k] = { rm: [...m.querySelectorAll('[name="rm"]:checked')].map((x) => +x.value), add: [...els[0].files] };
           else if (f.t === "file") out[f.k] = els[0].files[0] || null;
           else if (f.t === "number") out[f.k] = Math.min(5, Math.max(0, parseFloat(els[0].value) || 0));
-          else out[f.k] = els[0].value.trim();
+          else out[f.k] = f.t === "password" ? els[0].value : els[0].value.trim();
           if (f.req && !(f.t === "cats" ? out[f.k].length : out[f.k])) {
             const er = $(".adm-err", m); er.hidden = false; er.textContent = "Wajib diisi: " + f.l; return;
           }
@@ -155,8 +158,7 @@
         const n = 1 + Math.max(0, ...draft.works.map((x) => +((x.file || "").match(/work-(\d+)/) || [])[1] || 0));
         const id = "work-" + String(n).padStart(2, "0");
         if (!nw) { drop(cur.file); drop(cur.thumb); }
-        w.file = `works/${id}.jpg`; w.thumb = `works/${id}-thumb.jpg`;
-        put(w.file, full.blob); put(w.thumb, th.blob);
+        w.file = put(`works/${id}.jpg`, full.blob); w.thumb = put(`works/${id}-thumb.jpg`, th.blob);
         Object.assign(w, { w: full.w, h: full.h, format: "JPEG" });
         toast("");
       } catch (e) { toast("Gambar gagal diproses: " + e.message, true); return; }
@@ -176,9 +178,20 @@
       { k: "year", l: "Tahun", req: 1 }, { k: "title", l: "Nama penghargaan / prestasi", req: 1 },
       { k: "org", l: "Penyelenggara / event" }, { k: "desc", l: "Deskripsi", t: "area" },
       { k: "tag", l: "Label", hint: "Contoh: Award, Competition, Milestone" },
+      { k: "proofs", l: "Foto bukti (opsional, bisa banyak)", t: "proofs", hint: "Sertifikat, piala, screenshot pengumuman, dll." },
     ], cur);
     if (!v) return;
-    if (nw) draft.achievements.unshift(v); else draft.achievements[i] = v;
+    const it = { year: v.year, title: v.title, org: v.org, desc: v.desc, tag: v.tag, proofs: [...(cur.proofs || [])] };
+    v.proofs.rm.sort((x, y) => y - x).forEach((k) => { drop(it.proofs[k]); it.proofs.splice(k, 1); });
+    if (v.proofs.add.length) toast("Memproses foto…", false, true);
+    for (const f of v.proofs.add) {
+      try {
+        const r = await img(f, 1600, 0.85);
+        it.proofs.push(put(`achievements/proof-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}.jpg`, r.blob));
+      } catch (e) { toast("Foto gagal diproses: " + e.message, true); return; }
+    }
+    toast("");
+    if (nw) draft.achievements.unshift(it); else draft.achievements[i] = it;
     commit();
   }
 
@@ -196,8 +209,7 @@
       try {
         const a = await img(v.avatar, 240, 0.85);
         drop(cur.avatar);
-        r.avatar = "reviews/avatar-" + Date.now().toString(36) + ".jpg";
-        put(r.avatar, a.blob);
+        r.avatar = put("reviews/avatar-" + Date.now().toString(36) + ".jpg", a.blob);
       } catch (e) { toast("Foto gagal diproses: " + e.message, true); return; }
     }
     if (nw) draft.reviews.unshift(r); else draft.reviews[i] = r;
@@ -215,8 +227,7 @@
     try {
       toast("Memproses foto…", false, true);
       const r = await img(file, 1000, 0.88, "image/webp");
-      put("about-photo.webp", r.blob);
-      draft.about.photo = "about-photo.webp";
+      draft.about.photo = put("about-photo.webp", r.blob);
       draft.about.photoV = Date.now();
       commit();
       toast("");
@@ -235,6 +246,7 @@
       const it = arr[i];
       if (kind === "works") { drop(it.file); drop(it.thumb); }
       if (kind === "reviews") drop(it.avatar);
+      if (kind === "achievements") (it.proofs || []).forEach(drop);
       arr.splice(i, 1);
     } else {
       const j = a === "u" ? i - 1 : i + 1;

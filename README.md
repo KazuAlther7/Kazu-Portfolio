@@ -1,29 +1,24 @@
 # Kazu-Portfolio
 
-## Admin Mode
+## Admin Mode (token GitHub)
 
-Upload ke root repo: `index.html`, `admin.js`, `content.json`.
-Hapus `Index.html` (versi lama, huruf besar). Sisakan `index.html`.
+Upload ke root repo: `index.html`, `admin.js`, `content.json`. Hapus `Index.html` (huruf besar, versi lama).
+Hapus juga `supabase-setup.sql` kalau sempat ter-upload.
 
 ### Buat token (sekali)
-GitHub → Settings → Developer settings → Fine-grained tokens → Generate.
-- Repository access: hanya `Kazu-Portfolio`
-- Permissions: Contents = Read and write
-- Salin token (`github_pat_...`)
+GitHub → Settings → Developer settings → Fine-grained tokens → Generate new token.
+- Resource owner: KazuAlther7
+- Expiration: pilih Custom atau 1 tahun
+- Repository access: Only select repositories → `Kazu-Portfolio`
+- Permissions → Add permissions → **Contents** → Read and write
+- Generate, salin `github_pat_...` (muncul sekali). Jangan dibagikan.
 
 ### Masuk
-Buka salah satu:
-- `kazualther7.github.io/Kazu-Portfolio/#admin`
-- Tap 5x tulisan © di footer (HP/tablet)
-- Ctrl+Shift+A (desktop)
-
-Tempel token. Hanya token milik `@kazualther7` dengan izin tulis yang diterima.
+`kazualther7.github.io/Kazu-Portfolio/#admin`, atau tap 5x © di footer, atau Ctrl+Shift+A. Tempel token.
 
 ### Pakai
-- Klik teks mana pun (garis putus-putus) → ketik langsung.
-- Karya / Prestasi / Review: tombol `+ Tambah`, ✎ edit, ↑↓ urut, ✕ hapus.
-- Upload gambar karya: nama file, format, ukuran px, folder, nomor, tag, alt text, thumbnail terisi otomatis.
-- Skill tags: klik area skill. Foto profil: tombol "Foto profil".
-- `Publish` → satu commit ke GitHub. Live ±1–2 menit.
-
-Data disimpan di `content.json`. Gambar baru di `works/` dan `reviews/`.
+- Klik teks (garis putus-putus) → ketik.
+- Karya / Prestasi / Review: `+ Tambah`, ✎ edit, ↑↓ urut, ✕ hapus.
+- Prestasi: field "Foto bukti" (bisa banyak). Tampil "Bukti 1, 2…", klik untuk perbesar.
+- Upload karya: nama file, format, ukuran, nomor, tag, alt, thumbnail terisi otomatis.
+- `Publish` → satu commit ke GitHub, live ±1–2 menit.
